@@ -120,6 +120,9 @@ open class NextLevelSessionExporter: NSObject {
         }
     }
     
+    /// Set track.preferredTransform
+    public var preferredTransform: CGAffineTransform?
+    
     // private instance vars
     
     fileprivate let InputQueueLabel = "NextLevelSessionExporterInputQueue"
@@ -361,6 +364,9 @@ extension NextLevelSessionExporter {
         // video input
         if self._writer?.canApply(outputSettings: self.videoOutputConfiguration, forMediaType: AVMediaType.video) == true {
             self._videoInput = AVAssetWriterInput(mediaType: AVMediaType.video, outputSettings: self.videoOutputConfiguration)
+            if let preferredTransform = self.preferredTransform {
+                self._videoInput?.transform = preferredTransform
+            }
             self._videoInput?.expectsMediaDataInRealTime = self.expectsMediaDataInRealTime
         } else {
             print("Unsupported output configuration")
